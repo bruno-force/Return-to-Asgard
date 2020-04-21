@@ -44,6 +44,13 @@ function update_player()
 	do_sfx()
 end
 
+function draw_player()
+	spr(p.cs,p.x,p.y,1,1,p.flp,false)
+	if(p.atk==1) then
+		draw_sword()
+	end
+end
+
 function h_move()
 	local l=btn(0)--left
 	local r=btn(1)--right
@@ -117,7 +124,7 @@ function jump()
 end
 
 function attack()
-	p.cs=2
+	-- p.cs=2
 	p.atk=1
 end
 
