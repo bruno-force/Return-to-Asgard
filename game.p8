@@ -11,20 +11,20 @@ __lua__
 gv=.3--gravity
 
 function _init()
-	create_fire_emitter(25,95)
-	create_fire_emitter(112,95)
-	custom_menu()
-	init_player()
+  create_fire_emitter(25,95)
+  create_fire_emitter(112,95)
+  custom_menu()
+  init_player()
 end
 
 function _update60()
-	update_stage()
+  update_stage()
 end
 
 function _draw()
-	cls()
-	draw_stage()
-	devlogs()
+  cls()
+  draw_stage()
+  devlogs()
 end
 __gfx__
 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
