@@ -40,9 +40,9 @@ end
 
 -- INSTANCE METHODS
 function body:update()
-  if(self.before_update!=nill)self.before_update()
+  if(self.before_update!=nill)self:before_update()
   self:_update()
-  if(self.after_update!=nil)self.after_update()
+  if(self.after_update!=nil)self:after_update()
 end
 
 function body:_update()
@@ -60,8 +60,4 @@ function body:_update()
   --Bounds
   if(self.x<0 and self.dx<0) self.x=127
   if(self.x>127 and self.dx>0) self.x=0
-end
-
-function body:draw()
-  spr(self.animation:get_sprite(),self.x,self.y,1,1,self.fx,self.fy)
 end

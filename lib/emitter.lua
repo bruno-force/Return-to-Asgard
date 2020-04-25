@@ -43,9 +43,10 @@ function emmiter:spawn()
   local e=self
   if((e.ls==nil or e.pc<e.ls) and e.t%e.st==0) then
   if e.type==types.fire then
-    add_fire(e)
+    e:add_particle(e.x,e.y,3+rnd(5),e.fs,9)
+    e:add_particle(e.x,e.y,2+rnd(3),e.fs,8)
   elseif e.type==types.dust then
-    add_dust(e)
+    e:add_particle(e.x,e.y,3+rnd(3),e.fs,7)
   else
     asert(false,'no particle type found')
   end
@@ -57,7 +58,7 @@ function emmiter:update()
   local e=self
   e:spawn()
   for p in all(e.fx) do
-    update_particle(p)
+    p:update()
   end
   --update timer
   if(e.t<100) then e.t+=1
@@ -67,8 +68,12 @@ end
 function emmiter:draw()
   local e=self
   for p in all(e.fx) do
-    draw_particle(p)
+    p:draw()
   if(p.t>p.ls*p.fs)del(e.fx,p) --remove particle if lifespan ended
     if(e.ls != nil and e.pc>e.ls and #e.fx == 0)del(gfe,e)  --remove emmiter if lifespan ended
   end
+end
+
+function emmiter:add_particle(x,y,ls,fs,c)--emmiter,x,y,lifespan,frame skip,color
+  add(self.fx,particle:new(x,y,c,ls,fs))
 end

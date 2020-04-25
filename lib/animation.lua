@@ -7,7 +7,7 @@ function animation:new(i,s)
   self.i=i--id
   self.t=0--timer
   self.s=s--sprites
-  self.fs=6--frameskip
+  self.fs=16--frameskip
   return o
 end
 

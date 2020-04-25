@@ -5,6 +5,10 @@ function console:log(l,v)
   add(lgs,{l,v})
 end
 
+function console:terminal(l,v)
+  printh(l..':'..v)
+end
+
 function console:print()
   local c=13
   local ox,oy=2,2--offset
