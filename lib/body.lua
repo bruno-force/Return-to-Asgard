@@ -1,56 +1,67 @@
 bodies={}
-g,f=0.3,0.8--gravity,friction
-local acc=0.5
-local mdx=2
-local mdy=2
+g,f=0.3,0.85--gravity,friction
+acc=0.5
+local mdx=1
+local mdy=3
 
--- CONSTRUCTORS
-function add_body(x,y)
-  return add(bodies, new_body(x,y))
+-- BODIES
+function bodies:new(x,y)
+  return add(bodies, body:new(x,y))
 end
 
-function new_body(x,y)
-  return {
+function bodies:update()
+  for b in all(self) do
+    b:update()
+  end
+end
+
+function bodies:draw()
+  for b in all(self) do
+    b:draw()
+  end
+end
+
+--BODY
+
+body={}
+function body:new(x,y)
+  o = {
     x=x,
     y=y,
     dx=0,
-    dy=0
+    dy=0,
+    fx=false,--flip
+    fy=false--flip
   }
+  setmetatable(o, self)
+  self.__index = self--THIS LINE IS SUPER IMPORTANT
+  return o
 end
 
 -- INSTANCE METHODS
-function update_body(b)
-  if(b.before_update!=nill)b.before_update()
-  _update_body(b)
-  if(b.after_update!=nil)b.after_update()
+function body:update()
+  if(self.before_update!=nill)self.before_update()
+  self:_update()
+  if(self.after_update!=nil)self.after_update()
 end
 
-function _update_body(b)
+function body:_update()
   --Update Acceleration
-  b.dx=mid(-mdx,b.dx*f,mdx)
-  b.dy=mid(-mdy,b.dy+g,mdy)
+  self.dx=mid(-mdx,self.dx*f,mdx)
+  self.dy=mid(-mdy,self.dy+g,mdy)
   --Check Collition
-  if collide_map(b) then
-    b.dx=0 b.dy=0
+  if collide_map(self) then
+    self.dy=0
+    self.landed=true
   end
   --Update Coordinates
-  b.x+=b.dx
-  b.y+=b.dy
+  self.x+=self.dx
+  self.y+=self.dy
+  --Bounds
+  if(self.x<0 and self.dx<0) self.x=127
+  if(self.x>127 and self.dx>0) self.x=0
 end
 
-function draw_body(b)
-  spr(b.spr,b.x,b.y)
-end
-
--- GAME CYCLE
-function update_bodies()
-  for b in all(bodies) do
-    update_body(b)
-  end
-end
-
-function draw_bodies()
-  for b in all(bodies) do
-    draw_body(b)
-  end
+function body:draw()
+  spr(self.animation:get_sprite(),self.x,self.y,1,1,self.fx,self.fy)
 end

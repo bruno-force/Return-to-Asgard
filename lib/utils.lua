@@ -1,3 +1,5 @@
+logs={}
+
 function shallow_copy(o)
   local rv = {}
   for k, v in pairs(o) do
@@ -6,16 +8,22 @@ function shallow_copy(o)
   return rv
 end
 
-function devlogs()
+function print_logs()
+  local c=13
+  local ox,oy=2,2--offset
   --first col
-  print('tick:'..p.t,2,2,13)
-  print('pos x:'..p.x,2,12,13)
-  print('pos y:'..p.y,2,22,13)
-  print('sprt:'..p.cs,2,32,13)
-  print('pprt:'..pps.cs,2,42,13)
-  --second col
-  print('jump:'..tostr(btnp(5)),52,2,13)
-  print('accel x:'..p.ax,52,12,13)
-  print('accel y:'..p.ay,52,22,13)
-  print('landedt:'..p.lt,52,32,13)
+  for i,l in pairs(logs) do
+    local px,py=ox,2+oy--print pos
+    if(i%2!=0) then 
+    else 
+      px+=40
+    end
+    py=oy+(6*(flr((i-1)/2)))--floor division
+    print(l[1]..':'..l[2],px,py,c)
+  end
+  logs={}
+end
+
+function log(l,v)
+  add(logs,{l,v})
 end

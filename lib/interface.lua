@@ -6,7 +6,3 @@ function draw_interface()
     print('♥',1+(6*i),121,c)
   end
 end
-
-function custom_menu()
-  menuitem(1, 'custom menu item 1', nil)
-end
