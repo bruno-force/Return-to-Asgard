@@ -1,18 +1,15 @@
-logs={}
+console={}
+lgs={}
 
-function shallow_copy(o)
-  local rv = {}
-  for k, v in pairs(o) do
-    rv[k] = v
-  end
-  return rv
+function console:log(l,v)
+  add(lgs,{l,v})
 end
 
-function print_logs()
+function console:print()
   local c=13
   local ox,oy=2,2--offset
   --first col
-  for i,l in pairs(logs) do
+  for i,l in pairs(lgs) do
     local px,py=ox,2+oy--print pos
     if(i%2!=0) then 
     else 
@@ -21,9 +18,5 @@ function print_logs()
     py=oy+(6*(flr((i-1)/2)))--floor division
     print(l[1]..':'..l[2],px,py,c)
   end
-  logs={}
-end
-
-function log(l,v)
-  add(logs,{l,v})
+  lgs={}
 end

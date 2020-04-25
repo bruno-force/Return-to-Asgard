@@ -1,7 +1,7 @@
 animation={}--class definition
 --constructor
 function animation:new(i,s)
-  o = {}
+  local o = {}
   setmetatable(o, self)
   self.__index = self
   self.i=i--id

@@ -25,7 +25,7 @@ end
 
 body={}
 function body:new(x,y)
-  o = {
+  local o = {
     x=x,
     y=y,
     dx=0,
@@ -50,7 +50,7 @@ function body:_update()
   self.dx=mid(-mdx,self.dx*f,mdx)
   self.dy=mid(-mdy,self.dy+g,mdy)
   --Check Collition
-  if collide_map(self) then
+  if collision:map(self) then
     self.dy=0
     self.landed=true
   end

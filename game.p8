@@ -15,34 +15,34 @@ __lua__
 gv=.3--gravity
 
 function _init()
-  create_fire_emitter(25,95)
-  create_fire_emitter(112,95)
+  emmiters:new_fire(25,95)
+  emmiters:new_fire(112,95)
   init_player()
 end
 
 function _update60()
-  update_stage()
+  stage:update()
   bodies:update()
   add_logs()
 end
 
 function _draw()
   cls()
-  draw_stage()
+  stage:draw()
   bodies:draw()
-  print_logs()
+  console:print()
 end
 
 function add_logs()
-  log('x',p.x)
-  log('y',p.y)
-  log('dx',p.dx)
-  log('dy',p.dy)
-  log('aid',p.animation.i)
-  log('at',ceil(p.animation.t/p.animation.fs)..'/'..#p.animation.s)
-  log('land',tostr(p.landed))
-  log('tile',mget(p.x/8,p.y/8))
-  log('flag',fget(mget(p.x/8,p.y/8)))
+  console:log('x',p.x)
+  console:log('y',p.y)
+  console:log('dx',p.dx)
+  console:log('dy',p.dy)
+  console:log('aid',p.animation.i)
+  console:log('at',ceil(p.animation.t/p.animation.fs)..'/'..#p.animation.s)
+  console:log('land',tostr(p.landed))
+  console:log('tile',mget(p.x/8,p.y/8))
+  console:log('flag',fget(mget(p.x/8,p.y/8)))
 end
 
 __gfx__

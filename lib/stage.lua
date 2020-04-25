@@ -1,10 +1,11 @@
-cstage='GAME'
-function update_stage()
-  update_gfe()
+stage={}
+
+function stage:update()
+  emmiters:update()
 end
 
-function draw_stage()
+function stage:draw()
   map(0,0,0,0)
-  draw_gfe()
+  emmiters:draw()
   draw_interface()
 end
