@@ -26,8 +26,12 @@ function player:after_update()
   local la=self.a
   self.a=getaction()
 
-  if((la=='walk' or la=='stand') and self.a=='jup') sfx(0)
-  if(la=='jdn' and (self.a=='stand' or self.a=='walk')) sfx(1)
+  if((la=='walk' or la=='stand') and self.a=='jup') sfx(0) -- jump
+  if(la=='jdn' and (self.a=='stand' or self.a=='walk')) then --land
+    emmiters:new_dust(self.x+4,self.y+8)
+    emmiters:new_dust(self.x+4,self.y+8)
+    sfx(1) 
+  end
 
   animate(self.a)
 end

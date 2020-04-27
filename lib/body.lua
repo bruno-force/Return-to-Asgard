@@ -50,9 +50,12 @@ function body:_update()
   self.dx=mid(-mdx,self.dx*f,mdx)
   self.dy=mid(-mdy,self.dy+g,mdy)
   --Check Collition
-  if collision:map(self) then
+  self.landed=collision:mapv(self)
+  if collision:mapv(self) then
     self.dy=0
-    self.landed=true
+  end
+  if collision:maph(self) then
+    self.dx=0
   end
   --Update Coordinates
   self.x+=self.dx
