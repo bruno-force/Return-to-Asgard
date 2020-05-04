@@ -1,20 +1,32 @@
 collision={}
 
-function collision:mapv(b)
-  local w,h,x,y=8,8,b.x+b.dx,b.y+b.dy
+function collision:floor(x,y)
+  local w,h=3,8
+  console:pixel(x,y+h,14)
+  console:pixel(x+w,y+h,14)
   return any_collide({
     {x,y+h},
     {x+w,y+h}
   },0)
 end 
 
-function collision:maph(b) 
-  local w,h,x,y=8,8,b.x+b.dx,b.y+b.dy
+function collision:roof(x,y)
+  local w,h=3,8
+  console:pixel(x,y,14)
+  console:pixel(x+w,y,14)
   return any_collide({
     {x,y},
-    {x+w,y},
-    {x,y+h},
-    {x+w,y+h}
+    {x+w,y}
+  },0)
+end 
+
+function collision:walls(x,y) 
+  local w,h=8,7
+  console:pixel(x,y,10)
+  console:pixel(x,y+h,10)
+  return any_collide({
+    {x,y},
+    {x,y+h}
   },1)
 end 
 

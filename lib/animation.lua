@@ -1,13 +1,15 @@
 animation={}--class definition
 --constructor
 function animation:new(i,s)
-  local o = {}
+  local o = {
+    i=i,
+    s=s,
+    t=0,
+    fs=16
+  }
+  
   setmetatable(o, self)
   self.__index = self
-  self.i=i--id
-  self.t=0--timer
-  self.s=s--sprites
-  self.fs=16--frameskip
   return o
 end
 
@@ -22,5 +24,5 @@ function animation:update()
 end
 
 function animation:get_sprite()
-  return self.s[ceil(self.t/self.fs)]
+  return self.s[ceil(self.t/self.fs)] or self.s[1]
 end

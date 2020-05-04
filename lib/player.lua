@@ -1,8 +1,8 @@
 player=bodies:new(64,0)
 
 local sprtbl={
-  stand={0},
-  walk={1,2,3,2},
+  stand={1},
+  walk={2,3,4,3},
   jup={32},
   jht={33},
   jdn={34}
@@ -13,6 +13,7 @@ function player:init()
   self.landed=false
   self.flp=false
   self.a=getaction()
+  animate(self)
 end
 
 --gamecycle
@@ -22,7 +23,6 @@ function player:before_update()
 end
 
 function player:after_update()
-  print(self.a)
   local la=self.a
   self.a=getaction()
 
@@ -33,10 +33,25 @@ function player:after_update()
     sfx(1) 
   end
 
-  animate(self.a)
+  animate(self)
+
+  -- control camera
+  local cx = peek2(0x5f28)
+  local cy = peek2(0x5f2a)
+  local bo=40--bounds offset
+  local lb=cx+bo local ub=cx+128-bo
+  if self.x<lb then
+    cx+=self.x-lb
+  elseif self.x+7>ub then
+    cx+=self.x+7-ub
+  end
+  camera(cx, cy)
 end
 
 function player:draw()
+  local cx = peek2(0x5f28)
+  rect(cx+40,0,cx+40,127)
+  rect(cx+128-40,0,cx+128-40,127)
   spr(self.animation:get_sprite(),self.x,self.y,1,1,self.fx,self.fy)
 end
 
@@ -77,8 +92,7 @@ function getaction()
 end
 
 --animation
-function animate(i)
-  local p=player
-  if(p.animation==nil or not p.animation:is(i)) p.animation=animation:new(i,sprtbl[i])
+function animate(p)
+  if(p.animation==nil or not p.animation:is(p.a)) p.animation=animation:new(p.a,sprtbl[p.a])
   p.animation:update()
 end

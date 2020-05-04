@@ -1,22 +1,23 @@
-bodies={}
+bodieslist={}
 g,f=0.3,0.85--gravity,friction
 acc=0.5
 local mdx=1
 local mdy=3
 
+bodies={}
 -- BODIES
 function bodies:new(x,y)
-  return add(bodies, body:new(x,y))
+  return add(bodieslist, body:new(x,y))
 end
 
 function bodies:update()
-  for b in all(self) do
+  for b in all(bodieslist) do
     b:update()
   end
 end
 
 function bodies:draw()
-  for b in all(self) do
+  for b in all(bodieslist) do
     b:draw()
   end
 end
@@ -49,18 +50,37 @@ function body:_update()
   --Update Acceleration
   self.dx=mid(-mdx,self.dx*f,mdx)
   self.dy=mid(-mdy,self.dy+g,mdy)
-  --Check Collition
-  self.landed=collision:mapv(self)
-  if collision:mapv(self) then
-    self.dy=0
+  --Vertical Collision
+  for i=0,abs(self.dy) do
+    local di=i*sgn(self.dy)
+    if self.dy > 0 and collision:floor(self.x+2,self.y+di) then 
+      self.dy=di self.landed=true 
+      if(self.hit_floor!=nil)self:hit_floor()
+      break 
+    else
+      self.landed=false 
+    end
+    
+    if self.dy < 0 and collision:roof(self.x+2,self.y+di) then
+      self.dy=0 
+      if(self.hit_roof!=nil)self:hit_roof()
+      break 
+    end
   end
-  if collision:maph(self) then
-    self.dx=0
+  --Horizontal Collision
+  for i=0,abs(self.dx) do
+    local x=self.x--IMPROVE
+    if(sgn(self.dx)==1) x+=7
+    if collision:walls(x+i*sgn(self.dx),self.y) then 
+      self.dx=i*sgn(self.dx) 
+      if(self.hit_wall!=nil)self:hit_wall()
+      break 
+    end
   end
   --Update Coordinates
   self.x+=self.dx
   self.y+=self.dy
   --Bounds
-  if(self.x<0 and self.dx<0) self.x=127
-  if(self.x>127 and self.dx>0) self.x=0
+  -- if(self.x<0 and self.dx<0) self.x=127
+  -- if(self.x>127 and self.dx>0) self.x=0
 end
