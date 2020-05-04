@@ -1,4 +1,5 @@
-player=bodies:new(64,0)
+player={} setmetatable(player, body) 
+pready=false
 
 local sprtbl={
   stand={1},
@@ -9,22 +10,29 @@ local sprtbl={
 }
 
 --constructor
-function player:init()
-  self.landed=false
-  self.flp=false
-  self.a=getaction()
-  animate(self)
+function player:init(x,y)
+  local o = bodies:new(x,y)
+  o.landed=false
+  o.flp=false
+  o.a=getaction(o)
+  animate(o)
+  self.__index = self--THIS LINE IS SUPER IMPORTANT
+  setmetatable(o, self)
+  pready=true
 end
 
 --gamecycle
 function player:before_update()
-  h_move()
-  v_move()
+  console:log('player','before')
+  h_move(self)
+  v_move(self)
 end
 
 function player:after_update()
+  console:log('player', 'after')
   local la=self.a
-  self.a=getaction()
+  self.a=getaction(self)
+  console:log('player', self.a)
 
   if((la=='walk' or la=='stand') and self.a=='jup') sfx(0) -- jump
   if(la=='jdn' and (self.a=='stand' or self.a=='walk')) then --land
@@ -45,19 +53,19 @@ function player:after_update()
   elseif self.x+7>ub then
     cx+=self.x+7-ub
   end
+  console:log('x',self.x)
+  console:log('y', self.y)
+  console:log('cx',cx)
+  console:log('cy',cy)
   camera(cx, cy)
 end
 
 function player:draw()
-  local cx = peek2(0x5f28)
-  rect(cx+40,0,cx+40,127)
-  rect(cx+128-40,0,cx+128-40,127)
   spr(self.animation:get_sprite(),self.x,self.y,1,1,self.fx,self.fy)
 end
 
 --movement
-function h_move()
-  local p=player
+function h_move(p)
   if btn(0) then --left
     p.dx-=acc
     p.fx=true
@@ -67,8 +75,7 @@ function h_move()
   end
 end
 
-function v_move()
-  local p=player
+function v_move(p)
   if btnp(5) and p.landed then --if its on the floor allow to jump
     p.dy=-4
     p.landed=false
@@ -76,8 +83,7 @@ function v_move()
 end
 
 --actions
-function getaction()
-  local p=player
+function getaction(p)
   --walk or stand
   if p.landed then 
     if abs(p.dx)>.1 then return 'walk'
