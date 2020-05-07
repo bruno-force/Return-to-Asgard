@@ -1,7 +1,8 @@
 pico-8 cartridge // http://www.pico-8.com
 version 18
 __lua__
-
+-- return to asa
+-- by bam
 #include lib/console.lua
 #include lib/interface.lua
 #include lib/stage.lua
@@ -44,17 +45,6 @@ function _draw()
 end
 
 function add_logs()
-  local p=p1
-  -- console:log('x',p.x)
-  -- console:log('y',p.y)
-  -- console:log('dx',p.dx)
-  -- console:log('dy',p.dy)
-  -- console:log('aid',p.animation.i)
-  -- console:log('at',ceil(p.animation.t/p.animation.fs)..'/'..#p.animation.s)
-  -- console:log('cvt',tostr(collision:mapv(p)))
-  -- console:log('chz',tostr(collision:maph(p)))
-  -- console:log('tile',mget(p.x/8,p.y/8))
-  -- console:log('flag',fget(mget(p.x/8,p.y/8)))
 end
 
 __gfx__

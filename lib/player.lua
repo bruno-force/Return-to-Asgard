@@ -23,16 +23,13 @@ end
 
 --gamecycle
 function player:before_update()
-  console:log('player','before')
   h_move(self)
   v_move(self)
 end
 
 function player:after_update()
-  console:log('player', 'after')
   local la=self.a
   self.a=getaction(self)
-  console:log('player', self.a)
 
   if((la=='walk' or la=='stand') and self.a=='jup') sfx(0) -- jump
   if(la=='jdn' and (self.a=='stand' or self.a=='walk')) then --land
@@ -53,10 +50,6 @@ function player:after_update()
   elseif self.x+7>ub then
     cx+=self.x+7-ub
   end
-  console:log('x',self.x)
-  console:log('y', self.y)
-  console:log('cx',cx)
-  console:log('cy',cy)
   camera(cx, cy)
 end
 
