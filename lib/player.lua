@@ -1,4 +1,5 @@
 player={} setmetatable(player, body) 
+p1={}
 pready=false
 
 local sprtbl={
@@ -6,7 +7,8 @@ local sprtbl={
   walk={2,3,4,3},
   jup={32},
   jht={33},
-  jdn={34}
+  jdn={34},
+  ladder={19,20}
 }
 
 --constructor
@@ -18,6 +20,7 @@ function player:init(x,y)
   animate(o)
   self.__index = self--THIS LINE IS SUPER IMPORTANT
   setmetatable(o, self)
+  p1=o
   pready=true
 end
 
@@ -50,11 +53,7 @@ function player:after_update()
   elseif self.x+7>ub then
     cx+=self.x+7-ub
   end
-  camera(cx, cy)
-end
-
-function player:draw()
-  spr(self.animation:get_sprite(),self.x,self.y,1,1,self.fx,self.fy)
+  camera(max(0,cx), cy)
 end
 
 --movement
@@ -69,7 +68,16 @@ function h_move(p)
 end
 
 function v_move(p)
-  if btnp(5) and p.landed then --if its on the floor allow to jump
+  --climbing ladder
+  if inladder(p) then 
+    if btn(2) then
+      p.y-=.8
+    elseif btn(3) then
+      p.y+=.8
+    end
+  end
+  --jumping
+  if btnp(4) and p.landed then --if its on the floor allow to jump
     p.dy=-4
     p.landed=false
   end
@@ -77,6 +85,7 @@ end
 
 --actions
 function getaction(p)
+  if inladder(p) then return 'ladder' end
   --walk or stand
   if p.landed then 
     if abs(p.dx)>.1 then return 'walk'
@@ -88,10 +97,21 @@ function getaction(p)
     elseif p.dy>htt then return 'jdn' end--descend
   end
   --TODO:LAND
+  return 'stand'
 end
 
 --animation
 function animate(p)
   if(p.animation==nil or not p.animation:is(p.a)) p.animation=animation:new(p.a,sprtbl[p.a])
   p.animation:update()
+end
+
+function inladder(p) 
+  return collide_sprite({
+    {p.x+4,p.y+9},
+    {p.x+4,p.y+7}
+  },47) or collide_sprite({
+    {p.x+4,p.y+9},
+    {p.x+4,p.y+7}
+  },63  )
 end

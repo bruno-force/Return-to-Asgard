@@ -48,8 +48,3 @@ function enemy:hit_wall()
   end
 end
 
-function enemy:draw()
-  -- print(self.dx,self.x-4,self.y-4)
-  spr(self.animation:get_sprite(),self.x,self.y,1,1,self.fx,self.fy)
-end
-

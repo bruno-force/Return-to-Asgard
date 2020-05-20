@@ -34,8 +34,8 @@ function body:new(x,y)
     fx=false,--flip
     fy=false--flip
   }
-  setmetatable(o, self)
   self.__index = self--THIS LINE IS SUPER IMPORTANT
+  setmetatable(o, self)
   return o
 end
 
@@ -83,4 +83,8 @@ function body:_update()
   --Bounds
   -- if(self.x<0 and self.dx<0) self.x=127
   -- if(self.x>127 and self.dx>0) self.x=0
+end
+
+function body:draw()
+  spr(self.animation:get_sprite(),self.x,self.y,1,1,self.fx,self.fy)
 end

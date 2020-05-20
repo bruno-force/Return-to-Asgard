@@ -24,10 +24,11 @@ function console:draw()
     local px,py=ox,2+oy--print pos
     if(i%2!=0) then 
     else 
-      px+=40
+      px+=50
     end
     py=oy+(6*(flr((i-1)/2)))--floor division
-    print(l[1]..':'..l[2],cx+px,cy+py,c)
+    local lbl=l[1] local val = tostr(l[2])
+    -- print(lbl..':'..val,cx+px,cy+py,c)
   end
   lgs={}
 
