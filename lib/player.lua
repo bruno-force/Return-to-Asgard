@@ -44,16 +44,25 @@ function player:after_update()
   animate(self)
 
   -- control camera
-  local cx = peek2(0x5f28)
-  local cy = peek2(0x5f2a)
-  local bo=40--bounds offset
-  local lb=cx+bo local ub=cx+128-bo
-  if self.x<lb then
-    cx+=self.x-lb
-  elseif self.x+7>ub then
-    cx+=self.x+7-ub
+  local cx = peek2(0x5f28) local cy = peek2(0x5f2a)
+  local ox=40 local oy=40--bounds offset
+  local lbx=cx+ox local ubx=cx+128-ox
+  local lby=cy+oy local uby=cy+128-oy
+
+  -- calculate camera x
+  if self.x<lbx then
+    cx+=self.x-lbx
+  elseif self.x+7>ubx then
+    cx+=self.x+7-ubx
   end
-  camera(max(0,cx), cy)
+
+  -- calculate camera y
+  if self.y<lby then
+    cy+=self.y-lby
+  elseif self.y+7>uby then
+    cy+=self.y+7-uby
+  end
+  camera(max(0,cx), max(0,cy))
 end
 
 --movement
@@ -110,8 +119,8 @@ function inladder(p)
   return collide_sprite({
     {p.x+4,p.y+9},
     {p.x+4,p.y+7}
-  },47) or collide_sprite({
+  },95) or collide_sprite({
     {p.x+4,p.y+9},
     {p.x+4,p.y+7}
-  },63  )
+  },111)
 end
